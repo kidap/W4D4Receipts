@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  ReceiptsViewController.h
 //  W4D4Receipts
 //
 //  Created by Karlo Pagtakhan on 03/31/2016.
@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ReceiptsViewController : UIViewController
+
+
 
 
 @end
-
