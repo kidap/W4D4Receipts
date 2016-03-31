@@ -15,9 +15,9 @@ static NSString *defaultCurrency = @"$";
 
 @interface ReceiptsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIButton *addCategoryButton;
+@property (weak, nonatomic) IBOutlet UIButton *addReceiptButton;
 @property (strong, nonatomic) NSMutableArray<Tag *> *sourceArray;
-@property (strong, nonatomic) IBOutlet UIButton *addCategoryButton;
-@property (strong, nonatomic) IBOutlet UIButton *addReceiptButton;
 @end
 
 @implementation ReceiptsViewController
@@ -30,6 +30,7 @@ static NSString *defaultCurrency = @"$";
 -(void)viewDidAppear:(BOOL)animated{
   [self.sourceArray removeAllObjects];
   [self.sourceArray addObjectsFromArray:[[CoreDataHandler sharedInstance] getAllTags]];
+  
   [self.tableView reloadData];
 }
 //MARK: Preparation
@@ -45,6 +46,7 @@ static NSString *defaultCurrency = @"$";
   self.addReceiptButton.layer.borderColor  = [UIColor lightGrayColor].CGColor;
   self.addReceiptButton.layer.cornerRadius  = 5.0;
   [self.addReceiptButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
 }
 //MARK: Table view
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -75,9 +77,15 @@ static NSString *defaultCurrency = @"$";
     [self.tableView reloadData];
   }
 }
+-(void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section{
+  UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+  
+//  [header.contentView setBackgroundColor: [UIColor colorWithRed:0.765 green:0.467 blue:0.251 alpha:1]];
+  [header.textLabel setTextColor:[UIColor colorWithRed:0.996 green:0.824 blue:0.047 alpha:1]];
+}
 //MARK:Actions
 - (IBAction)addCategoryButtonTapped:(id)sender {
-  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Add a new Category" message:@"Enter category name" preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Add a new Tag" message:@"Enter tag name" preferredStyle:UIAlertControllerStyleAlert];
   //Add text field
   [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
     //do nothing
@@ -86,6 +94,7 @@ static NSString *defaultCurrency = @"$";
   [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
     [[CoreDataHandler sharedInstance] createTagWithName:alertController.textFields[0].text];
     [self.tableView reloadData];
+//    [self.tableView beginUpdates];
   }]];
   //Add cancel button
   [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {

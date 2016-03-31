@@ -11,10 +11,12 @@
 #import "Tag.h"
 
 @interface AddReceiptViewController ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate>
-@property (strong, nonatomic) IBOutlet UITextField *receiptAmount;
-@property (strong, nonatomic) IBOutlet UITextView *receiptDescription;
-@property (strong, nonatomic) IBOutlet UIDatePicker *datePicker;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITextField *receiptAmount;
+@property (weak, nonatomic) IBOutlet UITextView *receiptDescription;
+@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *saveButton;
 @property (strong, nonatomic) NSMutableArray<Tag *> *sourceArray;
 
 
@@ -26,7 +28,9 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   [self prepareView];
-  
+}
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+  [self.view endEditing:YES];
 }
 -(void)prepareView{
   [self.datePicker setDatePickerMode:UIDatePickerModeDate];
@@ -44,6 +48,15 @@
   self.receiptDescription.layer.borderColor  = [UIColor lightGrayColor].CGColor;
   self.receiptDescription.layer.cornerRadius  = 5.0;
   [self.receiptDescription setTextColor:[UIColor lightGrayColor]];
+  
+  self.cancelButton.layer.borderWidth  = 0.5;
+  self.cancelButton.layer.borderColor  = [UIColor lightGrayColor].CGColor;
+  self.cancelButton.layer.cornerRadius  = 5.0;
+  self.saveButton.layer.borderWidth  = 0.5;
+  self.saveButton.layer.borderColor  = [UIColor lightGrayColor].CGColor;
+  self.saveButton.layer.cornerRadius  = 5.0;
+  [self.cancelButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+  [self.saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 }
 //MARK: Actions
 - (IBAction)saveButton:(id)sender {
@@ -87,7 +100,12 @@
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
   return @"Category";
 }
-
+-(void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section{
+  UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+  
+    [header.contentView setBackgroundColor: [UIColor colorWithRed:0.004 green:0.255 blue:0.373 alpha:1]];
+  [header.textLabel setTextColor:[UIColor colorWithRed:0.996 green:0.824 blue:0.047 alpha:1]];
+}
 //MARK: TextField/TextView delegate
 -(void)textViewDidBeginEditing:(UITextView *)textView{
   textView.text = @"";
